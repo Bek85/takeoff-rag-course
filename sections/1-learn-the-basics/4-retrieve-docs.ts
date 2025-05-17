@@ -6,16 +6,19 @@ import { documentsTable } from "./db/schema/documents-schema";
 export async function retrieveDocuments(query: string, limit = 3) {
   const embeddings = await generateEmbeddings([query]);
 
-  const similarity = sql<number>`1 - (${cosineDistance(documentsTable.embedding, embeddings[0])})`;
+  const similarity = sql<number>`1 - (${cosineDistance(
+    documentsTable.embedding,
+    embeddings[0]
+  )})`;
 
   const documents = await db.query.documents.findMany({
     orderBy: desc(similarity),
-    limit: limit
+    limit: limit,
   });
 
-  console.log(documents);
+  console.log(documents[0].content);
 
   return documents;
 }
 
-retrieveDocuments("Tell me about rhinos");
+retrieveDocuments("Tell me about koalas");
