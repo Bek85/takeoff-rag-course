@@ -1,6 +1,6 @@
 import { openai } from "./api-clients";
 
-async function generateEmbeddings(texts: string[]) {
+export async function generateEmbeddings(texts: string[]) {
   const embedding = await openai.embeddings.create({
     model: "text-embedding-3-small",
     dimensions: 256,
@@ -10,4 +10,12 @@ async function generateEmbeddings(texts: string[]) {
   return embedding.data.map((embedding) => embedding.embedding);
 }
 
-export default generateEmbeddings;
+// async function main() {
+//   const embeddings = await generateEmbeddings([
+//     "Hello, world!",
+//     "This is a test",
+//   ]);
+//   console.log(embeddings);
+// }
+
+// main();
