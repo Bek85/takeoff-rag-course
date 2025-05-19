@@ -2,7 +2,7 @@ import { db } from "./db";
 import { factsTable } from "./db/schema/facts-schema";
 import { generateEmbeddings } from "./generate-embeddings";
 import { cosineDistance, desc, gt, and, sql } from "drizzle-orm";
-
+import { getOptimizedQuery } from "./optimize-query";
 export async function retrieveData(
   input: string,
   options: { limit?: number; minSimilarity?: number; name?: string | null } = {}
@@ -34,7 +34,8 @@ export async function retrieveData(
 
 async function main() {
   const documents = await retrieveData("What mammal can fly?");
-  console.log(documents);
+  const optimizedQuery = await getOptimizedQuery(documents[0].content);
+  console.log(optimizedQuery);
 }
 
 main();
