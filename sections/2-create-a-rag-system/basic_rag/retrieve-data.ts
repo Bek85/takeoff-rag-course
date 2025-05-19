@@ -31,3 +31,10 @@ export async function retrieveData(
 
   return documents;
 }
+
+async function main() {
+  const documents = await retrieveData("What mammal can fly?");
+  console.log(documents);
+}
+
+main();
