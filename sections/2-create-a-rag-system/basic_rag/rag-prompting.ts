@@ -2,7 +2,7 @@ import { processQuery } from "./all-together";
 import { openai } from "./api-clients";
 
 async function main() {
-  const query = "I want to learn about animal sleep patterns";
+  const query = "What do giraffes eat?";
 
   const relevantDocs = await processQuery(query);
 

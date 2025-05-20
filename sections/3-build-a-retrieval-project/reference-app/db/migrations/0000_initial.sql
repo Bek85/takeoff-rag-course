@@ -7,5 +7,5 @@ CREATE TABLE IF NOT EXISTS "documents" (
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
---> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "document_embedding_index" ON "documents" USING hnsw ("embedding" vector_cosine_ops);
+
+CREATE INDEX IF NOT EXISTS "data_embedding_index" ON "documents" USING hnsw ("embedding" vector_cosine_ops);
