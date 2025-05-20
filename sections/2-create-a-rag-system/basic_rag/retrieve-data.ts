@@ -2,8 +2,6 @@ import { db } from "./db";
 import { factsTable } from "./db/schema/facts-schema";
 import { generateEmbeddings } from "./generate-embeddings";
 import { cosineDistance, desc, gt, and, sql } from "drizzle-orm";
-import { getOptimizedQuery } from "./optimize-query";
-
 
 export async function retrieveData(
   input: string,
