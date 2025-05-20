@@ -15,18 +15,18 @@ export async function processQuery(userQuery: string) {
     limit: 10,
     minSimilarity: 0.3,
   });
-  console.log("Retrieved documents:", retrievedDocs);
+  // console.log("Retrieved documents:", retrievedDocs);
 
   const rankedResults = await rankDocuments(optimizedQuery, retrievedDocs, 3);
-  console.log("Ranked results:", rankedResults);
+  // console.log("Ranked results:", rankedResults);
 
   return rankedResults;
 }
 
-async function main() {
-  const query = "I want to learn about animal sleep patterns";
-  const results = await processQuery(query);
-  console.log("Final results:", results);
-}
+// async function main() {
+//   const query = "I want to learn about animal sleep patterns";
+//   const results = await processQuery(query);
+//   console.log("Final results:", results);
+// }
 
-main();
+// main();
