@@ -1,0 +1,30 @@
+"use server";
+
+import { cohere } from "@/lib/rag/api-clients";
+
+// Re-ranks documents using Cohere's reranking model for more accurate relevance scoring
+export async function rankDocuments(
+  query: string,
+  documents: { content: string }[],
+  limit = 3
+) {
+  // If no documents were found, return an empty array
+  if (!documents.length) {
+    return [];
+  }
+
+  // Call Cohere's rerank API to score and reorder documents based on relevance to query
+  const rerank = await cohere.v2.rerank({
+    documents: documents.map((doc) => doc.content), // Format docs for API - Cohere expects strings
+    query,
+    topN: limit, // Number of top results to return
+    model: "rerank-english-v3.0", // English reranking model
+  });
+
+  // Map reranked results back to original document format with relevance scores
+  return rerank.results.map((result) => ({
+    // name: documents[result.index].name,
+    content: documents[result.index].content,
+    relevanceScore: result.relevanceScore, // Score indicating relevance
+  }));
+}
