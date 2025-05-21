@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS vector;
+
 CREATE TABLE "documents" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
