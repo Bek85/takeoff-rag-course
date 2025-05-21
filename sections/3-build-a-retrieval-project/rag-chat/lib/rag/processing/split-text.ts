@@ -1,28 +1,34 @@
-"user server";
-
-import { get_encoding } from "tiktoken";
+"use server";
 
 export async function splitText(text: string) {
+  const MAX_CHUNK_SIZE = 1000; // Characters per chunk
   const chunks: string[] = [];
 
-  const CHUNK_SIZE = 500;
+  // Split text by sentences or paragraphs
+  const paragraphs = text.split(/\n\s*\n/);
 
-  const encoding = get_encoding("cl100k_base");
+  let currentChunk = "";
 
-  try {
-    const tokens = encoding.encode(text);
-
-    for (let i = 0; i < tokens.length; i += CHUNK_SIZE) {
-      const chunkTokens = tokens.slice(i, i + CHUNK_SIZE);
-      const chunk = new TextDecoder().decode(encoding.decode(chunkTokens));
-
-      chunks.push(chunk);
+  for (const paragraph of paragraphs) {
+    // If adding this paragraph would exceed max size, push current chunk and start new one
+    if (
+      currentChunk.length + paragraph.length > MAX_CHUNK_SIZE &&
+      currentChunk.length > 0
+    ) {
+      chunks.push(currentChunk);
+      currentChunk = paragraph;
+    } else {
+      currentChunk =
+        currentChunk.length === 0
+          ? paragraph
+          : `${currentChunk}\n\n${paragraph}`;
     }
-    return chunks;
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error splitting text");
-  } finally {
-    encoding.free();
   }
+
+  // Add the last chunk if it has content
+  if (currentChunk.length > 0) {
+    chunks.push(currentChunk);
+  }
+
+  return chunks;
 }
